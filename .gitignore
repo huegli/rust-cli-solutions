@@ -14,3 +14,4 @@ Cargo.lock
 *.pdb
 
 **/cant-touch-this
+.DS_Store
