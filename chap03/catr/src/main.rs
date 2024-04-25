@@ -31,7 +31,21 @@ fn run(args: Args) -> Result<()> {
     for filename in args.files {
         match open(&filename) {
             Err(err) => eprintln!("Failed to open {filename}: {err}"),
-            Ok(_) => println!("Opened {filename}"),
+            Ok(reader) => {
+                let mut line_num = 0;
+                for line in reader.lines() {
+                    let line = line?;
+                    if args.number_nonblank_lines && !line.is_empty() {
+                        line_num += 1;
+                        println!("{:6}\t{}", line_num, line);
+                    } else if args.number_lines {
+                        line_num += 1;
+                        println!("{:6}\t{}", line_num, line);
+                    } else {
+                        println!("{}", line);
+                    }
+                }
+            }
         }
     }
     Ok(())
