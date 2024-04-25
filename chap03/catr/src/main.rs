@@ -1,3 +1,4 @@
+use anyhow::Result;
 use clap::Parser;
 
 #[derive(Debug, Parser)]
@@ -17,7 +18,16 @@ struct Args {
     number_nonblank_lines: bool,
 }
 
+fn run(args: Args) -> Result<()> {
+    for filename in args.files {
+        println!("{filename}");
+    }
+    Ok(())
+}
+
 fn main() {
-    let args = Args::parse();
-    println!("{args:#?}")
+    if let Err(e) = run(Args::parse()) {
+        eprintln!("{e}");
+        std::process::exit(1);
+    }
 }
